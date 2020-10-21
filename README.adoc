@@ -1,0 +1,41 @@
+== Pitchfork
+
+A simple tool to run process under and be able to restart them without breaking the parent process.
+
+=== Why?
+
+To run processes, like a rails server, as the main process of a Docker daemon, while keeping the ability to restart it
+without having to restart the whole container, as I work inside of it.
+
+=== How to use
+
+To start a process, you use the +exec+ subcommand. You need to give a name to your process for future reference,
+then the command to run.
+
+[source,sh]
+pitchfork exec rails -- rails server
+
+This will run the pitchwork supervisor and the rails server underneath. You can now restart it with:
+
+[source,sh]
+pitchfork restart rails
+
+Or alternatively, stop it with the +stop+ subcommand. When shutting down a process, +pitchfork+ will try in succession
+the +INT+, +TERM+ then +KILL+ signals.
+
+By default, pitchfork uses the +/var/run/pitchfork+ directory to save its file, but you can override it with
++--run-directory+. However, you have to give it to every +pitchfork+ invocation.
+
+=== How it works
+
+The main process will open a FIFO file with the given name in the run directory, and read on it. If another process
+places a +r+ (Restart) or +s+ (Stop) in this file, the +pitchfork+ supervisor will execute the given action.
+
+=== Bugs
+
+Probably.
+
+This is a first implementation and the code is not pretty at the moment. But it is working. There is a lot of room
+for improvement.
+
+This might become another +Procfile+ after the needed cleaning.

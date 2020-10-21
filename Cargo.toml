@@ -1,0 +1,10 @@
+[package]
+authors = ["Thibault Hamel <contact@adaedra.eu>"]
+edition = "2018"
+license = "ISC"
+name = "pitchfork"
+version = "0.1.0"
+
+[dependencies]
+clap = "2.33"
+nix = "0.19"
